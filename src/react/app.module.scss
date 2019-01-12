@@ -1,3 +1,5 @@
+@import '../style/theme';
+
 .logo {
   width: 120px;
   height: 70px;
@@ -7,3 +9,7 @@
   float: left;
 }
 
+.background {
+  background-image: linear-gradient($layout-body-background, $layout-header-background);
+  background-size: cover;
+}

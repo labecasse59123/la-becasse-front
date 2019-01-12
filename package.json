@@ -12,7 +12,7 @@
     "cosmos:export": "dotenv -e .env.local -e .env cosmos-export --",
     "lint-fix:js": "eslint --fix ./src",
     "clean": "run-s _clean:dev _clean:dist",
-    "_serve:dev": "dotenv -e .env.local -e .env webpack-dev-server -- --mode development",
+    "_serve:dev": "dotenv -e .env.local -e .env webpack-dev-server -- --mode development --host 192.168.0.32",
     "_build:dist": "dotenv -e .env.local -e .env webpack -- --mode production",
     "_clean:dev": "rimraf ./.dev",
     "_clean:dist": "rimraf ./.dist"

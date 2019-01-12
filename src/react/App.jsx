@@ -1,33 +1,56 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import {
-  Layout, Menu, Breadcrumb, Icon,
+  Layout, Menu, Icon,
 } from 'antd';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import store from 'redux/store';
 import classNames from './app.module.scss';
 import SiderTrigger from './SiderTrigger';
-import Home from './views/Home';
-import History from './views/History';
-import Galery from './views/Galery';
-import Register from './views/Register';
-import Contact from './views/Contact';
+import {
+  Home, Galery, History, Register, Contact,
+} from './views';
 
 const { Header, Content, Sider } = Layout;
 
-/**
- * App root.
- *
- * @param {boolean} collapsed - State of the slider.
- */
-export default class App extends React.PureComponent {
-  state = {
-    collapsed: false,
+class App extends React.PureComponent {
+  static propTypes = {
+    history: PropTypes.shape().isRequired,
+    location: PropTypes.shape().isRequired,
   };
+
+  /**
+   * Fill state with the match route.
+   *
+   * @param {Object} props - App props from react router.
+   */
+  constructor(props) {
+    super(props);
+    const { pathname } = props.location;
+    const route = pathname.substr(1);
+    this.state = {
+      route: route === '' ? 'home' : route,
+      collapsed: false,
+    };
+  }
 
   onCollapse = (collapsed) => {
     this.setState({ collapsed });
+  };
+
+  navigate = (item, key) => {
+    const { history } = this.props;
+    this.setState({ route: key });
+    switch (key) {
+      case 'home':
+        history.push('/');
+        break;
+      default:
+        history.push(`/${key}`);
+        break;
+    }
   };
 
   /** Render app. */
@@ -39,20 +62,23 @@ export default class App extends React.PureComponent {
             position: 'fixed',
             zIndex: 1,
             width: '100%',
-            height: 102,
+            height: 103,
+            borderBottom: '1px solid #e8e8e8',
           }}
           >
             <div className={classNames.logo} />
             <Menu
-              theme="dark"
+              theme="light"
               mode="horizontal"
-              defaultSelectedKeys={['1']}
+              onClick={({ item, key }) => this.navigate(item, key)}
+              defaultSelectedKeys={['home']}
+              selectedKeys={[this.state.route]}
             >
-              <Menu.Item key="1"><Link to="/">Accueil</Link></Menu.Item>
-              <Menu.Item key="2"><Link to="/historique">Historique</Link></Menu.Item>
-              <Menu.Item key="3"><Link to="/galerie">Galerie</Link></Menu.Item>
-              <Menu.Item key="4"><Link to="/inscription">Inscription</Link></Menu.Item>
-              <Menu.Item key="5"><Link to="/contact">Contact</Link></Menu.Item>
+              <Menu.Item key="home">Accueil</Menu.Item>
+              <Menu.Item key="historique">Historique</Menu.Item>
+              <Menu.Item key="galerie">Galerie</Menu.Item>
+              <Menu.Item key="inscription">Inscription</Menu.Item>
+              <Menu.Item key="contact">Contact</Menu.Item>
             </Menu>
           </Header>
           <Layout style={{ paddingTop: 102, height: '100%' }}>
@@ -66,22 +92,21 @@ export default class App extends React.PureComponent {
             >
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={['home']}
+                selectedKeys={[this.state.route]}
                 style={{ height: '100%', borderRight: 0 }}
+                onClick={({ item, key }) => this.navigate(item, key)}
               >
-                <Menu.Item key="1"><Link to="/"><Icon type="home" /><span>Accueil</span></Link></Menu.Item>
-                <Menu.Item key="2"><Link to="/historique"><Icon type="info-circle" /><span>Historique</span></Link></Menu.Item>
-                <Menu.Item key="3"><Link to="/galerie"><Icon type="camera" /><span>Galerie</span></Link></Menu.Item>
-                <Menu.Item key="4"><Link to="/inscription"><Icon type="user" /><span>Inscription</span></Link></Menu.Item>
-                <Menu.Item key="5"><Link to="/contact"><Icon type="mail" /><span>Contact</span></Link></Menu.Item>
+                <Menu.Item key="home"><Icon type="home" /><span>Accueil</span></Menu.Item>
+                <Menu.Item key="historique"><Icon type="info-circle" /><span>Historique</span></Menu.Item>
+                <Menu.Item key="galerie"><Icon type="camera" /><span>Galerie</span></Menu.Item>
+                <Menu.Item key="inscription"><Icon type="user" /><span>Inscription</span></Menu.Item>
+                <Menu.Item key="contact"><Icon type="mail" /><span>Contact</span></Menu.Item>
               </Menu>
             </Sider>
-            <Layout style={{ padding: '0 24px 24px' }}>
-              <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Accueil</Breadcrumb.Item>
-              </Breadcrumb>
+            <Layout style={{ padding: '24px 24px 24px' }} className={classNames.background}>
               <Content style={{
-                background: '#fff', padding: 24, margin: 0, minHeight: 160,
+                background: '#fff', padding: 24, minHeight: 160,
               }}
               >
                 <Switch>
@@ -99,3 +124,5 @@ export default class App extends React.PureComponent {
     );
   }
 }
+
+export default withRouter(App);
