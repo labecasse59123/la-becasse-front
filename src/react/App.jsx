@@ -6,73 +6,84 @@ import {
 
 import store from 'redux/store';
 import classNames from './app.module.scss';
+import SiderTrigger from './SiderTrigger';
 
-const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 /**
  * App root.
+ *
+ * @param {boolean} collapsed - State of the slider.
  */
-export default function App() {
-  return (
-    <ReduxProvider store={store}>
-      <Layout>
-        <Header className="header">
-          <div className={classNames.logo} />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={['2']}
-            style={{ lineHeight: '64px' }}
-          >
-            <Menu.Item key="1">nav 1</Menu.Item>
-            <Menu.Item key="2">nav 2</Menu.Item>
-            <Menu.Item key="3">nav 3</Menu.Item>
-          </Menu>
-        </Header>
+export default class App extends React.PureComponent {
+  state = {
+    collapsed: false,
+  };
+
+  onCollapse = (collapsed) => {
+    this.setState({ collapsed });
+  };
+
+  /** Render app. */
+  render() {
+    return (
+      <ReduxProvider store={store}>
         <Layout>
-          <Sider width={200} style={{ background: '#fff' }}>
+          <Header style={{
+            position: 'fixed',
+            zIndex: 1,
+            width: '100%',
+            height: 102,
+          }}
+          >
+            <div className={classNames.logo} />
             <Menu
-              mode="inline"
+              theme="dark"
+              mode="horizontal"
               defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              style={{ height: '100%', borderRight: 0 }}
             >
-              <SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
-                <Menu.Item key="1">option1</Menu.Item>
-                <Menu.Item key="2">option2</Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
-                <Menu.Item key="5">option5</Menu.Item>
-                <Menu.Item key="6">option6</Menu.Item>
-                <Menu.Item key="7">option7</Menu.Item>
-                <Menu.Item key="8">option8</Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
-                <Menu.Item key="9">option9</Menu.Item>
-                <Menu.Item key="10">option10</Menu.Item>
-                <Menu.Item key="11">option11</Menu.Item>
-                <Menu.Item key="12">option12</Menu.Item>
-              </SubMenu>
+              <Menu.Item key="1">Accueil</Menu.Item>
+              <Menu.Item key="2">Historique</Menu.Item>
+              <Menu.Item key="3">Galerie</Menu.Item>
+              <Menu.Item key="4">Inscription</Menu.Item>
+              <Menu.Item key="5">Contact</Menu.Item>
             </Menu>
-          </Sider>
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>List</Breadcrumb.Item>
-              <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>
-            <Content style={{
-              background: '#fff', padding: 24, margin: 0, minHeight: 280,
-            }}
+          </Header>
+          <Layout style={{ paddingTop: 102, height: '100%' }}>
+            <Sider
+              width="20%"
+              style={{ background: '#fff' }}
+              collapsible
+              collapsed={this.state.collapsed}
+              onCollapse={this.onCollapse}
+              trigger={<SiderTrigger collapsed={this.state.collapsed} />}
             >
-              Content
-            </Content>
+              <Menu
+                mode="inline"
+                defaultSelectedKeys={['1']}
+                style={{ height: '100%', borderRight: 0 }}
+              >
+                <Menu.Item key="1"><Icon type="home" /><span>Accueil</span></Menu.Item>
+                <Menu.Item key="2"><Icon type="info-circle" /><span>Historique</span></Menu.Item>
+                <Menu.Item key="3"><Icon type="camera" /><span>Galerie</span></Menu.Item>
+                <Menu.Item key="4"><Icon type="user" /><span>Inscription</span></Menu.Item>
+                <Menu.Item key="5"><Icon type="mail" /><span>Contact</span></Menu.Item>
+              </Menu>
+            </Sider>
+            <Layout style={{ padding: '0 24px 24px' }}>
+              <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+              </Breadcrumb>
+              <Content style={{
+                background: '#fff', padding: 24, margin: 0, minHeight: 160,
+              }}
+              >
+                Content
+              </Content>
+            </Layout>
           </Layout>
         </Layout>
-      </Layout>
-    </ReduxProvider>
-  );
+      </ReduxProvider>
+    );
+  }
 }
