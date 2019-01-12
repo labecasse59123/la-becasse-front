@@ -14,6 +14,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const pixrem = require('pixrem');
 const webpack = require('webpack');
+const AntdScssThemePlugin = require('antd-scss-theme-plugin');
 
 /**
  * Get all environment variables whose name starts with the ENV_PREFIX (case insensitive).
@@ -64,6 +65,8 @@ module.exports = (env, argv = {}) => {
     template: './src/index.html.ejs',
   });
 
+  const antdScssThemePlugin = new AntdScssThemePlugin('./src/style/theme.scss');
+
   /**
    * Get hash template of css class names in css modules if enabled.
    *
@@ -112,6 +115,23 @@ module.exports = (env, argv = {}) => {
   }
 
   /**
+   * Make a less loader for antd.
+   *
+   * @param {Object} params - Params.
+   * @param {boolean} params.enableModules - Use CSS modules.
+   * @returns {Object[]} Loader for less files.
+   */
+  function makeLessLoader({ enableModules = false } = {}) {
+    return [
+      ...makeCssLoader(enableModules),
+      AntdScssThemePlugin.themify({
+        loader: 'less-loader',
+        options: { javascriptEnabled: true },
+      }),
+    ];
+  }
+
+  /**
    * Make a scss loader using style-loader in dev and extracts to a stylesheet in product.
    *
    * @param {Object} params - Params.
@@ -127,7 +147,7 @@ module.exports = (env, argv = {}) => {
           sourceMap: true,
         },
       },
-      {
+      AntdScssThemePlugin.themify({
         loader: 'sass-loader',
         options: {
           sourceMap: true,
@@ -136,7 +156,7 @@ module.exports = (env, argv = {}) => {
             './node_modules/',
           ],
         },
-      },
+      }),
     ];
   }
 
@@ -183,7 +203,7 @@ module.exports = (env, argv = {}) => {
         },
 
         /**
-         * Sass and css.
+         * Sass, less and css.
          */
 
         // CSS.
@@ -195,6 +215,12 @@ module.exports = (env, argv = {}) => {
         {
           test: /\.module\.css$/i,
           use: makeCssLoader({ enableModules: true }),
+        },
+
+        // Less.
+        {
+          test: /\.less$/,
+          use: makeLessLoader(),
         },
 
         // SCSS.
@@ -296,6 +322,9 @@ module.exports = (env, argv = {}) => {
 
       // Lint SCSS files.
       new StyleLintPlugin(),
+
+      // Ant SASS theme configuration
+      antdScssThemePlugin,
 
     ].filter(Boolean),
 
