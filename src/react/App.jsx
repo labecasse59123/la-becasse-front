@@ -89,6 +89,7 @@ class App extends React.PureComponent {
               collapsed={this.state.collapsed}
               onCollapse={this.onCollapse}
               trigger={<SiderTrigger collapsed={this.state.collapsed} />}
+              breakpoint="lg"
             >
               <Menu
                 mode="inline"

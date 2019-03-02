@@ -1,0 +1,18 @@
+server {
+  listen 443 http2  default_server;
+  listen [::]:443 http2 default_server;
+  root /var/www/labecasse;
+  index index.html;
+  server_name labecasse59123.fr www.labecasse59123.fr;
+  location / {
+    try_files $uri $uri/ =404;
+  }
+  ssl on;
+  ssl_certificate /etc/letsencrypt/live/labecasse59123.fr/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/labecasse59123.fr/privkey.pem;
+}
+server {
+  listen 0.0.0.0:80;
+  server_name labecasse59123.fr www.labecasse59123.fr;
+  rewrite ^ https://$host$request_uri? permanent;
+}
