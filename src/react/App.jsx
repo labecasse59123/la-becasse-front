@@ -55,19 +55,23 @@ class App extends React.PureComponent {
 
   /** Render app. */
   render() {
+    const { responsive } = store.getState();
     return (
       <ReduxProvider store={store}>
         <Layout>
-          <Header style={{
-            position: 'fixed',
-            zIndex: 1,
-            width: '100%',
-            height: 103,
-            borderBottom: '1px solid #e8e8e8',
-          }}
+          <Header
+            style={{
+              position: 'fixed',
+              zIndex: 1,
+              width: '100%',
+              height: 103,
+              borderBottom: '1px solid #e8e8e8',
+            }}
+            className={classNames.menuWrapper}
           >
             <div className={classNames.logo} />
             <Menu
+              className={classNames.menu}
               theme="light"
               mode="horizontal"
               onClick={({ item, key }) => this.navigate(item, key)}
@@ -85,7 +89,7 @@ class App extends React.PureComponent {
             <Sider
               width="20%"
               style={{ background: '#fff' }}
-              collapsible
+              collapsible={responsive.greaterThan.medium}
               collapsed={this.state.collapsed}
               onCollapse={this.onCollapse}
               trigger={<SiderTrigger collapsed={this.state.collapsed} />}
