@@ -20,11 +20,11 @@ export default class SiderTrigger extends React.PureComponent {
   render() {
     if (this.props.collapsed) {
       return (
-        <Icon style={{ fontSize: '2em', paddingTop: '10px' }} type="menu-unfold" />
+        <Icon style={{ fontSize: '20px', paddingTop: '10px' }} type="menu-unfold" />
       );
     }
     return (
-      <Icon style={{ fontSize: '2em', paddingTop: '10px' }} type="menu-fold" />
+      <Icon style={{ fontSize: '20px', paddingTop: '10px' }} type="menu-fold" />
     );
   }
 }
