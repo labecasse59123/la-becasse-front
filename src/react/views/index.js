@@ -4,6 +4,7 @@ import Galery from './Galery';
 import Register from './Register';
 import Contact from './Contact';
 import ModesDeChasse from './ModesDeChasse';
+import News from './News';
 
 export {
   Home,
@@ -12,4 +13,5 @@ export {
   Register,
   Contact,
   ModesDeChasse,
+  News,
 };

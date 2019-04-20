@@ -20,6 +20,7 @@ function getEnvironmentVariable(variableName) {
 export default {
   app: {
     version: process.env.npm_package_version,
+    env: process.env.NODE_ENV,
   },
 
   whatever: getEnvironmentVariable('WHATEVER'),

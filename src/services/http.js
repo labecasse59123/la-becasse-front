@@ -8,7 +8,6 @@ import env from 'config/env';
 const request = use(agent);
 
 request.use(prefix(env.api));
-console.log(env);
 request.use(JWT({
   header: 'jwt', // Try to read jwt from header 'jwt'
   local: 'jwt', // Try to fetch jwt from localstorage key 'jwt'

@@ -5,12 +5,14 @@ import {
 } from 'antd';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 
 import store from 'redux/store';
+import env from 'config/env';
 import classNames from './app.module.scss';
 import SiderTrigger from './components/sider/SiderTrigger';
 import {
-  Home, Galery, Register, Contact, ModesDeChasse,
+  Home, Galery, Register, Contact, ModesDeChasse, News,
 } from './views';
 
 const { Header, Content, Sider } = Layout;
@@ -34,6 +36,15 @@ class App extends React.PureComponent {
       route: route === '' ? 'home' : route,
       collapsed: false,
     };
+  }
+
+  /** Load recaptcha on mount. */
+  componentDidMount() {
+    // Init ReCAPTCHA from Google
+    if (env.app.env === 'production') {
+      // TODO: use env variable to store token
+      loadReCaptcha('6LfjRZ8UAAAAAAdPC201P13DkomlulLZABtf7nIo');
+    }
   }
 
   onCollapse = (collapsed) => {
@@ -79,6 +90,7 @@ class App extends React.PureComponent {
               selectedKeys={[this.state.route]}
             >
               <Menu.Item key="home">Accueil</Menu.Item>
+              <Menu.Item key="news">Actualités</Menu.Item>
               <Menu.Item key="modesDeChasse">Modes de Chasse</Menu.Item>
               <Menu.Item key="galerie">Galerie</Menu.Item>
               <Menu.Item key="inscription">Inscription</Menu.Item>
@@ -103,6 +115,7 @@ class App extends React.PureComponent {
                 onClick={({ item, key }) => this.navigate(item, key)}
               >
                 <Menu.Item key="home"><Icon type="home" /><span>Accueil</span></Menu.Item>
+                <Menu.Item key="news"><Icon type="global" /><span>Actualités</span></Menu.Item>
                 <Menu.Item key="modesDeChasse"><Icon type="info-circle" /><span>Modes de Chasse</span></Menu.Item>
                 <Menu.Item key="galerie"><Icon type="camera" /><span>Galerie</span></Menu.Item>
                 <Menu.Item key="inscription"><Icon type="user" /><span>Inscription</span></Menu.Item>
@@ -116,6 +129,7 @@ class App extends React.PureComponent {
               >
                 <Switch>
                   <Route exact path="/" component={Home} />
+                  <Route path="/news" component={News} />
                   <Route path="/modesDeChasse" component={ModesDeChasse} />
                   <Route path="/galerie" component={Galery} />
                   <Route path="/inscription" component={Register} />
