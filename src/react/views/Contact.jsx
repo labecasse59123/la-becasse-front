@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import {
-  Form, Input, Checkbox, Button,
+  Form, Input, Button,
 } from 'antd';
 import PropTypes from 'prop-types';
+
+import store from 'redux/store';
+import { contactActions } from 'redux/contact';
 
 const { TextArea } = Input;
 
@@ -15,7 +18,7 @@ class ContactForm extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        store.dispatch(contactActions.submitContactMessage(values));
       }
     });
   };
@@ -55,9 +58,9 @@ class ContactForm extends PureComponent {
         >
           {getFieldDecorator('email', {
             rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
+              type: 'email', message: 'Votre email n\'est pas valide !',
             }, {
-              required: true, message: 'Please input your E-mail!',
+              required: true, message: 'Merci de renseigner votre email.',
             }],
           })(
             <Input />,
@@ -67,25 +70,16 @@ class ContactForm extends PureComponent {
           {...formItemLayout}
           label="Message"
         >
-          {getFieldDecorator('email', {
+          {getFieldDecorator('message', {
             rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
-            }, {
-              required: true, message: 'Please input your E-mail!',
+              required: true, message: 'Merci de renseigner votre message.',
             }],
           })(
             <TextArea rows={4} />,
           )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
-          })(
-            <Checkbox>I have read the agreement</Checkbox>,
-          )}
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
+          <Button type="primary" htmlType="submit">Envoyer</Button>
         </Form.Item>
       </Form>
     );

@@ -1,7 +1,6 @@
 import {
   createStore,
   applyMiddleware,
-  combineReducers,
   compose,
 } from 'redux';
 
@@ -10,7 +9,7 @@ import { createLogger } from 'redux-logger';
 import { responsiveStoreEnhancer } from 'redux-responsive';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import responsiveReducers from './responsive/reducers';
+import rootReducer from './rootReducer';
 
 // Do not refactor this into !['production', 'test'].includes(process.env.NODE_ENV)
 // Because uglify cannot statically analyze this.
@@ -18,11 +17,6 @@ const isDevEnvironment = (
   process.env.NODE_ENV !== 'production'
   && process.env.NODE_ENV !== 'test'
 );
-
-// Create root reducer.
-const reducers = combineReducers({
-  responsive: responsiveReducers,
-});
 
 const middlewares = [
   thunk,
@@ -45,4 +39,4 @@ const enhancers = composer(
 
 const initialState = {};
 
-export default createStore(reducers, initialState, enhancers);
+export default createStore(rootReducer, initialState, enhancers);

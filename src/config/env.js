@@ -23,4 +23,5 @@ export default {
   },
 
   whatever: getEnvironmentVariable('WHATEVER'),
+  api: getEnvironmentVariable('API'),
 };
