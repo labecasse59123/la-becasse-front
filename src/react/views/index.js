@@ -3,6 +3,7 @@ import History from './History';
 import Galery from './Galery';
 import Register from './Register';
 import Contact from './Contact';
+import ModesDeChasse from './ModesDeChasse';
 
 export {
   Home,
@@ -10,4 +11,5 @@ export {
   Galery,
   Register,
   Contact,
+  ModesDeChasse,
 };

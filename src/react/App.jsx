@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
 
 import store from 'redux/store';
 import classNames from './app.module.scss';
-import SiderTrigger from './SiderTrigger';
+import SiderTrigger from './components/sider/SiderTrigger';
 import {
-  Home, Galery, History, Register, Contact,
+  Home, Galery, Register, Contact, ModesDeChasse,
 } from './views';
 
 const { Header, Content, Sider } = Layout;
@@ -79,7 +79,7 @@ class App extends React.PureComponent {
               selectedKeys={[this.state.route]}
             >
               <Menu.Item key="home">Accueil</Menu.Item>
-              <Menu.Item key="historique">Historique</Menu.Item>
+              <Menu.Item key="modesDeChasse">Modes de Chasse</Menu.Item>
               <Menu.Item key="galerie">Galerie</Menu.Item>
               <Menu.Item key="inscription">Inscription</Menu.Item>
               <Menu.Item key="contact">Contact</Menu.Item>
@@ -87,7 +87,7 @@ class App extends React.PureComponent {
           </Header>
           <Layout style={{ paddingTop: 102, height: '100%' }}>
             <Sider
-              width="20%"
+              width="15%"
               style={{ background: '#fff' }}
               collapsible={responsive.greaterThan.medium}
               collapsed={this.state.collapsed}
@@ -103,20 +103,20 @@ class App extends React.PureComponent {
                 onClick={({ item, key }) => this.navigate(item, key)}
               >
                 <Menu.Item key="home"><Icon type="home" /><span>Accueil</span></Menu.Item>
-                <Menu.Item key="historique"><Icon type="info-circle" /><span>Historique</span></Menu.Item>
+                <Menu.Item key="modesDeChasse"><Icon type="info-circle" /><span>Modes de Chasse</span></Menu.Item>
                 <Menu.Item key="galerie"><Icon type="camera" /><span>Galerie</span></Menu.Item>
                 <Menu.Item key="inscription"><Icon type="user" /><span>Inscription</span></Menu.Item>
                 <Menu.Item key="contact"><Icon type="mail" /><span>Contact</span></Menu.Item>
               </Menu>
             </Sider>
-            <Layout style={{ padding: '24px 24px 24px' }} className={classNames.background}>
+            <Layout>
               <Content style={{
-                background: '#fff', padding: 24, minHeight: 160,
+                background: '#fff', marginLeft: 1, padding: 24, minHeight: 160, overflow: 'auto',
               }}
               >
                 <Switch>
                   <Route exact path="/" component={Home} />
-                  <Route path="/historique" component={History} />
+                  <Route path="/modesDeChasse" component={ModesDeChasse} />
                   <Route path="/galerie" component={Galery} />
                   <Route path="/inscription" component={Register} />
                   <Route path="/contact" component={Contact} />

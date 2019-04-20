@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-  Form, Input, Row, Col, Checkbox, Button,
+  Form, Input, Checkbox, Button,
 } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -76,24 +76,6 @@ class ContactForm extends PureComponent {
           })(
             <TextArea rows={4} />,
           )}
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="Captcha"
-          extra="We must make sure that your are a human."
-        >
-          <Row gutter={8}>
-            <Col span={12}>
-              {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: 'Please input the captcha you got!' }],
-              })(
-                <Input />,
-              )}
-            </Col>
-            <Col span={12}>
-              <Button>Get captcha</Button>
-            </Col>
-          </Row>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           {getFieldDecorator('agreement', {

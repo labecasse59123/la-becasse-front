@@ -1,10 +1,10 @@
 import React from 'react';
 import Galery from 'react/components/galery/Galery';
 
-import dog from './img/dog.jpg';
-import rabbit from './img/rabbit.jpg';
-import goose from './img/goose.jpg';
-import woodcock from './img/woodcock.jpg';
+import dog from 'img/dog.jpg';
+import rabbit from 'img/rabbit.jpg';
+import goose from 'img/goose.jpg';
+import woodcock from 'img/woodcock.jpg';
 
 const images = [
   { id: 1, img: dog, alt: 'Photo by Tadeusz Lakota on Unsplash' },
